@@ -36,7 +36,7 @@ export async function POST(req: Request) {
   // console.log(messages)
 
   // pinecone_small, zilliz_small
-  const result = await fetch('http://127.0.0.1:8000/get_context?message=' + question + '&source=zilliz_small')
+  const result = await fetch('https://ailawyer.nimbl.tv/get_context_sources?message=' + question + '&source=zilliz_small')
 
 
 
@@ -88,9 +88,9 @@ export async function POST(req: Request) {
     configuration.apiKey = previewToken
   }
   const res = await openai.createChatCompletion({
-    model: 'gpt-3.5-turbo',
+    model: 'gpt-4',
     messages,
-    temperature: 0.7,
+    temperature: 0.5,
     stream: true
   })
 
