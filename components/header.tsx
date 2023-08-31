@@ -33,25 +33,31 @@ export async function Header() {
             <Image src="/nimbl-favicon-large.png" alt="logo" width={50} height={50} />
           </Link>
         </div>
-        <div className='flex'>
+        <div className='flex items-center'>
+        <ThemeToggle />
+        {/* <IconSeparator className="w-6 h-6 text-muted-foreground/50" /> */}
         {session?.user ? (
-          <Sidebar>
-            <React.Suspense fallback={<div className="flex-1 overflow-auto" />}>
-              {/* @ts-ignore */}
-              <SidebarList userId={session?.user?.id} />
-            </React.Suspense>
-            <SidebarFooter>
-              <ThemeToggle />
-              <ClearHistory clearChats={clearChats} />
-            </SidebarFooter>
-          </Sidebar>
+          // <Sidebar>
+          //   <React.Suspense fallback={<div className="flex-1 overflow-auto" />}>
+          //     {/* @ts-ignore */}
+          //     <SidebarList userId={session?.user?.id} />
+          //   </React.Suspense>
+          //   <SidebarFooter>
+          //     <ThemeToggle />
+          //     <ClearHistory clearChats={clearChats} />
+          //   </SidebarFooter>
+          // </Sidebar>
+          <></>
+          
         ) : (
           <Link href="/" target="_blank" rel="nofollow">
             <IconNextChat className="w-6 h-6 mr-2 dark:hidden" inverted />
             <IconNextChat className="hidden w-6 h-6 mr-2 dark:block" />
           </Link>
         )}
+        
         <div className="flex items-center">
+          
           <IconSeparator className="w-6 h-6 text-muted-foreground/50" />
           {session?.user ? (
             <UserMenu user={session.user} />
