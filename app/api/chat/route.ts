@@ -36,15 +36,21 @@ export async function POST(req: Request) {
   // console.log(messages)
 
   // pinecone_small, zilliz_small
-  const result = await fetch('https://ailawyer.nimbl.tv/get_context_sources?message=' + question + '&source=zilliz_small')
+  // latest zilliz_small
+  // http://3.101.85.74:8001/get_context?message=
 
-
-
+  try {
+    // http://127.0.0.1:8000/get_context_sources?message=
+    // https://ailawyer.nimbl.tv/get_context_sources?message=
+  const result = await fetch('http://127.0.0.1:8000/get_context_sources?message=' + question + '&source=zilliz_small')
+  
   if (!result.ok) {
-    // This will activate the closest `error.js` Error Boundary
+    console.log(result)
     throw new Error('Failed to fetch data')
+    // hahah
   }
   const response = await result.json() as ContextResponse;
+  console.log(response)
   // const template_base =
   //     `You are a legal affairs assistant for a \\
   //     financing company. \\
@@ -57,13 +63,35 @@ export async function POST(req: Request) {
   // const template_footer = `Question: ${question}`
 
   // Тщательно проверяйте свои ответы на точность и последовательность. Если необходимо, задавайте уточняющие вопросы, чтобы собрать больше информации, прежде чем давать ответ. Если вы столкнулись с трудным или сложным вопросом, оставайтесь спокойными и оказывайте помощь по мере своих возможностей
+
+
   const templateBase = `Вы являетесь полезным AI-ассистентом электронного правительства (eGov). eGov.kz - это портал «электронного правительства» Казахстана, который предоставляет доступ к государственным услугам в онлайн-формате.`;
+  // const templateBase = `Вы являетесь ИИ Юристом - помощник юриста с искусственным интеллектом в делах законов Республики Казахстан.`;
 
   const templateFooter = `Вопрос: ${question}\n Детальный ответ:`;
 
   let template = templateBase;
 
   if (response) {
+    // const templateWithContext = ` 
+    // Ваш опыт и знания в области законов бесценны для нас, и нам нужна ваша помощь в обслуживании пользователей.
+    // Для начала представьтесь как ИИ Юрист.
+    
+    // Вам будет предоставлен контекст, на базе которого вы ОБЯЗАНЫ будете отвечать на вопросы пользователя. 
+    // Если контекст не связан с вопросом пользователя, попросите пользователя задать вопрос как-то по другому. 
+    // ВАЖНО:
+    // - Ответ должен быть максимально детальным и полезным, чтобы помочь пользователю решить его проблему или ответить на его вопрос.
+    // - Никогда не упоминай использование контекста! Говори просто: я не уверен.
+    // - Указывайте полное название закона, если он есть в контексте.
+    // - 1 МРП в тенге составил 3450
+    // - Всегда отвечайте на языке пользователя.
+    // - Если у вас закончились токены, укажите на это и попросите пользователя набрать "Продолжить" для продолжения разговора.
+    // - Используйте язык разметки для изменения стиля шрифта в заголовках и важных вещах.
+    // - Если спросят кто вас создал отвечайте: NimblAI Group.
+    // Пожалуйста, используйте следующие контекстные данные из законов Республики Казахстан для ответа на вопрос в конце.
+    // Контекст: ${JSON.stringify(response)}
+    // В конце ответа на вопрос, пожалуйста, добавьте источники И СТРАНИЦЫ которые указаны в контексте. Дайте название источнику на основе контекста.
+    // `;
     const templateWithContext = `
     Ваша роль - помогать пользователям в использовании портала eGov.kz. Помогите пользователю с вопросами, связанными с порталом eGov.kz. Используйте следующие рекомендации при ответе на вопросы:
     Ответ должен быть максимально детальным и полезным, чтобы помочь пользователю решить его проблему или ответить на его вопрос.
@@ -127,4 +155,9 @@ export async function POST(req: Request) {
   })
 
   return new StreamingTextResponse(stream)
+
+  } catch (error) {
+    console.log("Error with context gathering")
+    console.log(error)
+  }
 }
