@@ -27,6 +27,7 @@ export async function POST(req: Request) {
   const session = await auth()
   const question = messages[messages.length - 1].content;
   if (session == null) {
+    console.log('Unauthorized error')
     return new Response('Unauthorized', {
       status: 401
     })
