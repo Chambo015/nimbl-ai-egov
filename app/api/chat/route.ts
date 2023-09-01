@@ -42,7 +42,7 @@ export async function POST(req: Request) {
   try {
     // http://127.0.0.1:8000/get_context_sources?message=
     // https://ailawyer.nimbl.tv/get_context_sources?message=
-  const result = await fetch('http://127.0.0.1:8000/get_context_sources?message=' + question + '&source=zilliz_small')
+  const result = await fetch('https://ailawyer.nimbl.tv/get_context_sources?message=' + question + '&source=zilliz_small')
   
   if (!result.ok) {
     console.log(result)
