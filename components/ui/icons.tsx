@@ -104,6 +104,20 @@ function IconOpenAI({ className, ...props }: React.ComponentProps<'svg'>) {
   )
 }
 
+function IconNimbl({ className, ...props }: React.ComponentProps<'svg'>) {
+  return (
+    // <svg
+    //   aria-label="Vercel logomark"
+    //   role="img"
+    //   viewBox="0 0 74 64"
+    //   className={cn('h-4 w-4', className)}
+    //   {...props}
+    // >
+      <img className='w-4 h-4' src="/nimbl-favicon-large.png" alt="logo-text" />
+    // </svg>
+  )
+}
+
 function IconVercel({ className, ...props }: React.ComponentProps<'svg'>) {
   return (
     <svg
@@ -519,4 +533,5 @@ export {
   IconExternalLink,
   IconChevronUpDown,
   IconMicrophone,
+  IconNimbl
 }
