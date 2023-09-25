@@ -43,7 +43,9 @@ export async function POST(req: Request) {
   try {
     // http://127.0.0.1:8000/get_context_sources?message=
     // https://ailawyer.nimbl.tv/get_context_sources?message=
-  const result = await fetch('https://ailawyer.nimbl.tv/get_context_sources?message=' + question + '&source=zilliz_small')
+
+    // zilliz_egov_only_services, zilliz_small
+  const result = await fetch('https://ailawyer.nimbl.tv/get_context_sources?message=' + question + '&source=zilliz_egov_only_services')
   
   if (!result.ok) {
     console.log(result)
@@ -104,11 +106,15 @@ export async function POST(req: Request) {
     Категорически запрещается заявлять что вы были созданы OpenAI, ни при каких обстоятельствах.
     Пожалуйста, используйте следующие контекстные данные для ответа на вопрос в конце.
     Контекст: ${JSON.stringify(response)}
-    В конце ответа на вопрос, пожалуйста, добавьте ссылки на источники которые указаны в контексте. Дайте название ссылке на основе контекста. Если в контексте нет ссылок, дайте только ответ и не указывайте ссылки в конце. Если в контексте нету ссылок, НЕ ПРИДУМЫВАЙТЕ их, ни при каких обстоятельствах.
+    В конце ответа на вопрос, пожалуйста, добавьте ссылки на источники которые указаны в контексте в виде списка. Дайте название ссылке на основе контекста. Если в контексте нет ссылок, дайте только ответ и не указывайте ссылки в конце. Если в контексте нету ссылок, НЕ ПРИДУМЫВАЙТЕ их, ни при каких обстоятельствах.
+    ТАКЖЕ НУЖНО УПОМЯНУТЬ ЧТО ПОЛУЧИТЬ УСЛУГУ МОЖНО НАПРЯМУЮ НАЖАВ НА КНОПКУ "Заказать услугу" внизу страницы.
     `;
 
     template += templateWithContext + templateFooter;
-    // console.log(template);
+    console.log('#######################################################');
+    console.log('Overall question: ')
+    console.log(template);
+    console.log('#######################################################');
     // console.log(source)
     messages[messages.length - 1].content = template;
   }

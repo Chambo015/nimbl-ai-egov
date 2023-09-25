@@ -8,6 +8,7 @@ import { FooterText } from '@/components/footer'
 // import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import { ClipLoader, SyncLoader } from 'react-spinners'
 
 export interface ChatPanelProps
   extends Pick<
@@ -56,8 +57,41 @@ export function ChatPanel({
   const setLinkHandler = (text: string) => {
     const urlRegex = /\((https?:\/\/[^\s]+)\)/;
     const match = text.match(urlRegex);
-    if (match && match[1] && match[1].includes('services')) setLink(match[1]);
+    if (match && match[1] && match[1].includes('2Fpassport')) setLink(match[1]);
   }
+
+  const [data, setData] = useState<any>(null);
+  const [loadingAuth, setLoadingAuth] = useState<boolean>(false);
+  const [loadingApi, setLoadingApi] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchData = async () => {
+    try {
+      
+      setLoadingAuth(true);
+      const response = await fetch('/api/egov-data');
+      if (!response.ok) {
+        console.log(response);
+        throw new Error('Network response was not ok');
+      }
+      const result = await response.json();
+      setData(result);
+      // download file from url
+      // await new Promise((resolve) => setTimeout(resolve, 3000));
+      setLoadingAuth(false);
+      setLoadingApi(true);
+      // await new Promise((resolve) => setTimeout(resolve, 3000));
+      window.open(result.resultsForDownload[1].url, '_blank');
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      // sleep(1000);
+      // await new Promise((resolve) => setTimeout(resolve, 10000));
+      setLoadingApi(false);
+    }
+  };
+  // как получить справку из наркологии?
+
   return (
     <div className="fixed inset-x-0 bottom-0 bg-gradient-to-b from-muted/10 from-10% to-muted/30 to-50%">
       <ButtonScrollToBottom />
@@ -71,7 +105,8 @@ export function ChatPanel({
               className="bg-background"
             >
               <IconStop className="mr-2" />
-              Stop generating
+              {/* Stop generating */}
+              Остановить 
             </Button>
           ) : (
             messages?.length > 0 && (
@@ -85,20 +120,40 @@ export function ChatPanel({
                   className="bg-background"
                 >
                   <IconRefresh className="mr-2" />
-                  Regenerate response
+                  {/* Regenerate response */}
+                  Получить новый ответ
                 </Button>
 
                 {link != '' && (
-                  <Link href={link} target="_blank" rel="nofollow">
-                    <Button size='sm' variant="link" className='bg-[#0a8323] text-[12px] text-white uppercase'>
-                      <IconArrowRight className="mr-2" />
-                      Заказать услугу онлайн
+                  // <Link href={link} target="_blank" rel="nofollow">
+                  <div onClick={() => fetchData()}>
+                    <Button size='sm' variant="link" className='bg-[#0a8323] text-[12px] text-white capitalize'>
+                      {loadingAuth ? (
+                        <>
+                        <ClipLoader className='mr-2' size={20} color="hsla(86, 28%, 93%, 1)" />
+                        Авторизация...
+                        </>
+                      ) : loadingApi ? 
+                      (
+                        <>
+                        <ClipLoader className='mr-2' size={20} color="hsla(86, 28%, 93%, 1)" />
+                        Получение услуги...
+                        </>
+                        ) : (
+                        <>
+                          <IconArrowRight className="mr-2" />
+                           Заказать услугу
+                        </>
+                      )}
+                      
                     </Button>
-                  </Link>
+                    </div>
+                  // </Link>
                 )}
               </div>
             )
           )}
+          {/* {loadingApi ? (<p>Loading API...</p>) : error ? (<p>{error}</p>) : data ? (<p>{JSON.stringify(data)}</p>) : null} */}
         </div>
         <div className="space-y-4 border-t bg-background px-4 py-2 shadow-lg sm:rounded-t-xl sm:border md:py-4">
           {/* <Dictaphone /> */}
