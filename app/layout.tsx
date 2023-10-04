@@ -43,8 +43,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
         )}
       >
         <Toaster />
-        <Providers attribute="class" defaultTheme="system" enableSystem>
         
+        <Providers attribute="class" defaultTheme="system" enableSystem>
           <div className="flex flex-col min-h-screen">
             {/* @ts-ignore */}
             <Header />
@@ -52,6 +52,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           </div>
           <TailwindIndicator />
         </Providers>
+        {/* </ChakraProvider> */}
       </body>
     </html>
   )
