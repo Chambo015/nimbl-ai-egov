@@ -51,6 +51,17 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
         }
       }
     })
+  const [getService, setGetService] = useState(false)
+  const [phoneNum, setPhoneNum] = useState('')
+  const [email, setEmail] = useState('')
+  // const [messagesNew, setMessagesNew] = useState<Message[]>([
+  //   {
+  //     id: '324234',
+  //     role: 'assistant',
+  //     content: 'Хотите получить услугу сейчас?',
+  //     name: 'get_service',
+  //   }
+  // ])
   return (
     <>
       <div className={cn('pb-[200px] pt-4 md:pt-10', className)}>
@@ -60,6 +71,55 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
           <>
             <ChatList messages={messages} />
             <ChatScrollAnchor trackVisibility={isLoading} />
+            {(messages.length > 0 && !isLoading && !getService) && (
+              <div className='flex flex-row space-x-2 items-center mx-auto max-w-2xl px-4'>
+                <p>
+                  Хотите получить услугу сейчас?
+                </p>
+                <Button
+                  onClick={() => {
+                    // setInput('да')
+                    setGetService(true)
+                  }}
+                >
+                  Получить услугу
+                </Button>
+              </div>
+            )}
+
+            {getService && (
+              <div className='flex flex-col space-y-4 w-auto text-left mx-auto max-w-2xl px-4 rounded-lg border bg-background p-8'>
+                <p className='px-0'>
+                  Пожалуйста, введите свой номер телефона
+                </p>
+                <Input
+                  type='tel'
+                  value={input}
+                  placeholder="Номер телефона"
+                  onChange={e => setPhoneNum(e.target.value)}
+                />
+                <p className='px-0'>
+                  Пожалуйста, введите свой e-mail
+                </p>
+                <Input
+                  type='email'
+                  value={input}
+                  placeholder="E-mail"
+                  onChange={e => setEmail(e.target.value)}
+                />
+                <Button
+                  variant='default'
+                  size='lg'
+                  onClick={() => {
+                    // setInput('да')
+                    // setGetService(false)
+                  }}
+                >
+                  Подписать
+                </Button>
+              </div>
+            )}
+            
           </>
         ) : (
           <EmptyScreen setInput={setInput} />
