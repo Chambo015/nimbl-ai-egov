@@ -14,7 +14,7 @@ import {
   IconVercel
 } from '@/components/ui/icons'
 import { SidebarFooter } from '@/components/sidebar-footer'
-import { ThemeToggle } from '@/components/theme-toggle'
+// import { ThemeToggle } from '@/components/theme-toggle'
 import { ClearHistory } from '@/components/clear-history'
 import { UserMenu } from '@/components/user-menu'
 import { LoginButton } from '@/components/login-button'
@@ -29,7 +29,12 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from './ui/input'
 import { DialogEgov } from './dialog'
+import dynamic from 'next/dynamic'
 
+const ThemeToggle = dynamic(() => import('@/components/theme-toggle'), {
+  ssr: false,
+  loading: () => <></>, // Optional loading component
+});
 
 export async function Header() {
   // const session = await auth();
