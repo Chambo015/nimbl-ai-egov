@@ -23,6 +23,7 @@ import { useEffect, useState } from 'react'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
 import { toast } from 'react-hot-toast'
+import { RadioGroupRoot, RadioGroupItem, RadioGroupIndicator, RadioGroupLabel } from './ui/radio'
 
 const IS_PREVIEW = process.env.VERCEL_ENV === 'preview'
 export interface ChatProps extends React.ComponentProps<'div'> {
@@ -101,6 +102,13 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
       setLink('');
     }
   }
+
+  const narkoOptions = [
+    'На себя',
+    'На ребёнка',
+    'Законный представитель'
+  ]
+  const [narkoService, setNarkoService] = useState<string | null>(null)
   return (
     <>
       <div className={cn('pb-[200px] pt-4 md:pt-10', className)}>
@@ -116,6 +124,8 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
                   Хотите получить услугу сейчас?
                 </p>
                 <Button
+                  variant='default'
+                  size='sm'
                   onClick={() => {
                     // setInput('да')
                     setGetService(true)
@@ -126,18 +136,53 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
               </div>
             )}
 
-            {getService && (
-              <div className='flex flex-col space-y-4 w-auto text-left mx-auto max-w-2xl px-4 rounded-lg border bg-background p-8'>
-                <p className='px-0'>
-                  Пожалуйста, введите свой номер телефона
+            {getService && serviceType != '' && (
+              serviceType === 'narko' ? (
+                <div className='flex flex-col space-y-4 w-auto text-left mx-auto max-w-2xl px-6 rounded-lg border bg-background p-8'>
+                <p className='px-0 font-semibold'> 
+                  ПРЕДОСТАВЛЕНИЕ СВЕДЕНИЙ С ЦЕНТРА ПСИХИЧЕСКОГО ЗДОРОВЬЯ «НАРКОЛОГИЯ»
                 </p>
-                <Input
+                <p className='px-0'>
+                  Получить услугу:
+                </p>
+                <RadioGroupRoot 
+                  className="RadioGroupRoot" 
+                  defaultValue={narkoOptions[0]} 
+                  onValueChange={(value) => setNarkoService(value)} 
+                  aria-label="View density">
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <RadioGroupItem value={narkoOptions[0]} id="r1">
+                      <RadioGroupIndicator />
+                    </RadioGroupItem>
+                    <RadioGroupLabel htmlFor="r1">
+                      На себя
+                    </RadioGroupLabel>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <RadioGroupItem value={narkoOptions[1]} id="r2">
+                      <RadioGroupIndicator />
+                    </RadioGroupItem>
+                    <RadioGroupLabel htmlFor="r2">
+                    На ребёнка
+                    </RadioGroupLabel>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <RadioGroupItem value={narkoOptions[2]} id="r3">
+                      <RadioGroupIndicator />
+                    </RadioGroupItem>
+                    <RadioGroupLabel htmlFor="r3">
+                    Законный представитель
+                    </RadioGroupLabel>
+                  </div>
+                  {/* ... other radio items ... */}
+                </RadioGroupRoot>
+                {/* <Input
                   type='tel'
                   value={input}
                   placeholder="Номер телефона"
                   onChange={e => setPhoneNum(e.target.value)}
-                />
-                <p className='px-0'>
+                /> */}
+                {/* <p className='px-0'>
                   Пожалуйста, введите свой e-mail
                 </p>
                 <Input
@@ -145,18 +190,23 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
                   value={input}
                   placeholder="E-mail"
                   onChange={e => setEmail(e.target.value)}
-                />
+                /> */}
                 <Button
                   variant='default'
                   size='lg'
+                  className='mt-2'
                   onClick={() => {
                     // setInput('да')
+                    setLink('');
                     setGetService(false)
                   }}
                 >
                   Подписать
                 </Button>
               </div>
+              ) : (
+                <></>
+              ) 
             )}
             
           </>
