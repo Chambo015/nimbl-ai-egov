@@ -19,7 +19,7 @@ import {
   DialogHeader,
   DialogTitle
 } from '@/components/ui/dialog'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
 import { toast } from 'react-hot-toast'
@@ -51,6 +51,8 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
         }
       }
     })
+
+  const [showGetService, setShowGetService] = useState(false)
   const [getService, setGetService] = useState(false)
   const [phoneNum, setPhoneNum] = useState('')
   const [email, setEmail] = useState('')
@@ -62,16 +64,53 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
   //     name: 'get_service',
   //   }
   // ])
+  const [link, setLink] = useState('')
+  const [serviceType, setServiceType] = useState('')
+  useEffect(() => {
+    if (!isLoading && messages?.length > 0) {
+      console.log("Finished!!!");
+      setLink('');
+      setShowGetService(false);
+      const lastAssistantMessage = messages
+        .filter((msg) => msg.role === 'assistant')
+        .slice(-1)[0];
+
+      setLinkHandler(lastAssistantMessage.content);
+
+      // Text-to-speech part
+      // const utterance = new SpeechSynthesisUtterance(lastAssistantMessage.content);
+      // utterance.lang = 'ru-RU'; // Set the language code for Russian
+
+      // speechSynthesis.speak(utterance);
+    }
+  }, [isLoading, messages]);
+
+  const setLinkHandler = (text: string) => {
+    const urlRegex = /\((https?:\/\/[^\s]+)\)/;
+    const match = text.match(urlRegex);
+    if (match && match[1] && match[1].includes('2Fpassport')) {
+      setShowGetService(true);
+      setLink(match[1]);
+      setServiceType('narko');
+    } else if (match && match[1] && match[1].includes('pass076_mu')) {
+      setShowGetService(true);
+      setLink(match[1]);
+      setServiceType('forma-2');
+    } else {
+      setShowGetService(false);
+      setLink('');
+    }
+  }
   return (
     <>
       <div className={cn('pb-[200px] pt-4 md:pt-10', className)}>
-        {/* <p className='text-center'>{messages.length}</p>
-        <p className='text-center'>{isLoading.valueOf().toString()}</p> */}
+        {/* <p className='text-center'>{messages.length}</p> */}
+        {/* <p className='text-center'>{isLoading.valueOf().toString()}</p> */}
         {messages.length || isLoading ? (
           <>
             <ChatList messages={messages} />
             <ChatScrollAnchor trackVisibility={isLoading} />
-            {(messages.length > 0 && !isLoading && !getService) && (
+            {(messages.length > 0 && showGetService && !isLoading && !getService) && (
               <div className='flex flex-row space-x-2 items-center mx-auto max-w-2xl px-4'>
                 <p>
                   Хотите получить услугу сейчас?

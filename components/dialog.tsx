@@ -20,8 +20,9 @@ import {
 export function DialogEgov() {
     const [previewToken, setPreviewToken] = React.useState<boolean>(false);
 
-    const [userName, setUserName] = React.useState<string>('980403350842');
-    const [password, setPassword] = React.useState<string>('d9jGShNE');
+    const [userName, setUserName] = React.useState<string>('');
+    // d9jGShNE
+    const [password, setPassword] = React.useState<string>('');
     const [result, setResult] = React.useState<any>(null);
     const [smsCode, setSmsCode] = React.useState<string>('');
     return (

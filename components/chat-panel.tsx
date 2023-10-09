@@ -35,61 +35,61 @@ export function ChatPanel({
   messages
 }: ChatPanelProps) {
 
-  useEffect(() => {
-    if (!isLoading && messages?.length > 0) {
-      console.log("Finished!!!");
-      setLink('');
-      const lastAssistantMessage = messages
-        .filter((msg) => msg.role === 'assistant')
-        .slice(-1)[0];
+  // useEffect(() => {
+  //   if (!isLoading && messages?.length > 0) {
+  //     console.log("Finished!!!");
+  //     setLink('');
+  //     const lastAssistantMessage = messages
+  //       .filter((msg) => msg.role === 'assistant')
+  //       .slice(-1)[0];
 
-      setLinkHandler(lastAssistantMessage.content);
+  //     setLinkHandler(lastAssistantMessage.content);
 
-      // Text-to-speech part
-      // const utterance = new SpeechSynthesisUtterance(lastAssistantMessage.content);
-      // utterance.lang = 'ru-RU'; // Set the language code for Russian
+  //     // Text-to-speech part
+  //     // const utterance = new SpeechSynthesisUtterance(lastAssistantMessage.content);
+  //     // utterance.lang = 'ru-RU'; // Set the language code for Russian
 
-      // speechSynthesis.speak(utterance);
-    }
-  }, [isLoading, messages]);
+  //     // speechSynthesis.speak(utterance);
+  //   }
+  // }, [isLoading, messages]);
 
-  const [link, setLink] = useState('')
-  const setLinkHandler = (text: string) => {
-    const urlRegex = /\((https?:\/\/[^\s]+)\)/;
-    const match = text.match(urlRegex);
-    if (match && match[1] && match[1].includes('2Fpassport')) setLink(match[1]);
-  }
+  // const [link, setLink] = useState('')
+  // const setLinkHandler = (text: string) => {
+  //   const urlRegex = /\((https?:\/\/[^\s]+)\)/;
+  //   const match = text.match(urlRegex);
+  //   if (match && match[1] && match[1].includes('2Fpassport')) setLink(match[1]);
+  // }
 
-  const [data, setData] = useState<any>(null);
-  const [loadingAuth, setLoadingAuth] = useState<boolean>(false);
-  const [loadingApi, setLoadingApi] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  // const [data, setData] = useState<any>(null);
+  // const [loadingAuth, setLoadingAuth] = useState<boolean>(false);
+  // const [loadingApi, setLoadingApi] = useState<boolean>(false);
+  // const [error, setError] = useState<string | null>(null);
 
-  const fetchData = async () => {
-    try {
+  // const fetchData = async () => {
+  //   try {
       
-      setLoadingAuth(true);
-      const response = await fetch('/api/egov-data');
-      if (!response.ok) {
-        console.log(response);
-        throw new Error('Network response was not ok');
-      }
-      const result = await response.json();
-      setData(result);
-      // download file from url
-      // await new Promise((resolve) => setTimeout(resolve, 3000));
-      setLoadingAuth(false);
-      setLoadingApi(true);
-      // await new Promise((resolve) => setTimeout(resolve, 3000));
-      window.open(result.resultsForDownload[1].url, '_blank');
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      // sleep(1000);
-      // await new Promise((resolve) => setTimeout(resolve, 10000));
-      setLoadingApi(false);
-    }
-  };
+  //     setLoadingAuth(true);
+  //     const response = await fetch('/api/egov-data');
+  //     if (!response.ok) {
+  //       console.log(response);
+  //       throw new Error('Network response was not ok');
+  //     }
+  //     const result = await response.json();
+  //     setData(result);
+  //     // download file from url
+  //     // await new Promise((resolve) => setTimeout(resolve, 3000));
+  //     setLoadingAuth(false);
+  //     setLoadingApi(true);
+  //     // await new Promise((resolve) => setTimeout(resolve, 3000));
+  //     window.open(result.resultsForDownload[1].url, '_blank');
+  //   } catch (err: any) {
+  //     setError(err.message);
+  //   } finally {
+  //     // sleep(1000);
+  //     // await new Promise((resolve) => setTimeout(resolve, 10000));
+  //     setLoadingApi(false);
+  //   }
+  // };
   // как получить справку из наркологии?
 
   return (
@@ -97,7 +97,7 @@ export function ChatPanel({
       <ButtonScrollToBottom />
       <div className="mx-auto sm:max-w-2xl sm:px-4">
         {/* before h-28 if link */}
-        <div className={`flex ${isLoading || link == '' ? 'h-10' : 'h-12'} items-center justify-center`}>
+        <div className={`flex ${isLoading ? 'h-10' : 'h-12'} items-center justify-center`}>
           {isLoading ? (
             <Button
               variant="outline"
@@ -123,33 +123,6 @@ export function ChatPanel({
                   {/* Regenerate response */}
                   Получить новый ответ
                 </Button>
-
-                {link != '' && (
-                  // <Link href={link} target="_blank" rel="nofollow">
-                  <div onClick={() => fetchData()}>
-                    <Button size='sm' variant="link" className='bg-[#0a8323] text-[12px] text-white capitalize'>
-                      {loadingAuth ? (
-                        <>
-                        <ClipLoader className='mr-2' size={20} color="hsla(86, 28%, 93%, 1)" />
-                        Авторизация...
-                        </>
-                      ) : loadingApi ? 
-                      (
-                        <>
-                        <ClipLoader className='mr-2' size={20} color="hsla(86, 28%, 93%, 1)" />
-                        Получение услуги...
-                        </>
-                        ) : (
-                        <>
-                          <IconArrowRight className="mr-2" />
-                           Заказать услугу
-                        </>
-                      )}
-                      
-                    </Button>
-                    </div>
-                  // </Link>
-                )}
               </div>
             )
           )}
