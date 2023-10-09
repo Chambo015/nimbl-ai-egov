@@ -112,7 +112,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
                   size='lg'
                   onClick={() => {
                     // setInput('да')
-                    // setGetService(false)
+                    setGetService(false)
                   }}
                 >
                   Подписать

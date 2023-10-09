@@ -1,4 +1,4 @@
-import { getChats, removeChat, shareChat } from '@/app/actions'
+import { getChats } from '@/app/actions'
 import { SidebarActions } from '@/components/sidebar-actions'
 import { SidebarItem } from '@/components/sidebar-item'
 
@@ -19,8 +19,8 @@ export async function SidebarList({ userId }: SidebarListProps) {
                 <SidebarItem key={chat?.id} chat={chat}>
                   <SidebarActions
                     chat={chat}
-                    removeChat={removeChat}
-                    shareChat={shareChat}
+                    removeChat={null as any}
+                    shareChat={null as any}
                   />
                 </SidebarItem>
               )

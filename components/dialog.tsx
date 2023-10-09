@@ -23,7 +23,7 @@ export function DialogEgov() {
     const [userName, setUserName] = React.useState<string>('980403350842');
     const [password, setPassword] = React.useState<string>('d9jGShNE');
     const [result, setResult] = React.useState<any>(null);
-
+    const [smsCode, setSmsCode] = React.useState<string>('');
     return (
     <>
         <Button variant="link" className="-ml-2" onClick={() => setPreviewToken(true)}>
@@ -48,10 +48,23 @@ export function DialogEgov() {
             placeholder="Пароль"
             onChange={e => setPassword(e.target.value)}
           />
+          {result && (
+            <>
+            <DialogDescription>
+                Введите код из смс
+            </DialogDescription>
+            <Input
+                value={smsCode}
+                placeholder="Код из смс"
+                onChange={e => setSmsCode(e.target.value)}
+              />
+            </>
+          )
+          }
           <DialogFooter className="items-center">
             <Button
               onClick={async () => {
-                if (userName != '' && password != '') {
+                if (userName != '' && password != '' && !result) {
                     const response = await fetch('/api/egov-auth-intial', {
                         method: 'POST',
                         headers: {
@@ -64,11 +77,26 @@ export function DialogEgov() {
                       });
                     const result = await response.text();
                     console.log('result', result);
+                    setResult(result);
+                } else {
+                    const response = await fetch('/api/egov-auth-final', {
+                        method: 'POST',
+                        headers: {
+                          'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                          username : userName,
+                          password : password,
+                          smsCode : smsCode
+                        })
+                      });
+                    const result = await response.text();
+                    console.log('result', result);
                     // setResult(result);
                 }
               }}
             >
-                Авторизоваться
+                {!result ? 'Получить код' : 'Подтвердить'}
             </Button>
           </DialogFooter>
         </DialogContent>

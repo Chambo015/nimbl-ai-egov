@@ -51,15 +51,15 @@ export async function POST(req: Request) {
     body: JSON.stringify(payload)
   });
 
-  console.log(postResponse.headers, postResponse.headers.get('set-cookie'));
+  // console.log(postResponse.headers, postResponse.headers.get('set-cookie'));
   // console.log(headers2);
     // cookies = responseFirst.headers.get('set-cookie') || cookies;
     // console.log('cookies2', cookies);
     // const data = await responseFirst.json();
     // console.log(data);
-    // return new Response(JSON.stringify(data), {
-    //   headers: { 'Content-Type': 'application/json' },
-    //   });
+    return new Response(JSON.stringify({'hello':'dsfsfd'}), {
+      headers: { 'Content-Type': 'application/json' },
+      });
   } catch (error) {
     console.log('Error here: ', error);
     return new Response(error as any);

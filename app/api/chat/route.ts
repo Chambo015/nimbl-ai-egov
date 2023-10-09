@@ -2,7 +2,7 @@ import { kv } from '@vercel/kv'
 import { OpenAIStream, StreamingTextResponse } from 'ai'
 import { Configuration, OpenAIApi } from 'openai-edge'
 
-import { auth } from '@/auth'
+// import { auth } from '@/auth'
 import { nanoid } from '@/lib/utils'
 
 interface ContextResponse {
@@ -24,14 +24,14 @@ const openai = new OpenAIApi(configuration)
 export async function POST(req: Request) {
   const json = await req.json()
   let { messages, previewToken } = json
-  const session = await auth()
+  // const session = await auth()
   const question = messages[messages.length - 1].content;
-  if (session == null) {
-    console.log('Unauthorized error')
-    return new Response('Unauthorized', {
-      status: 401
-    })
-  }
+  // if (session == null) {
+  //   console.log('Unauthorized error')
+  //   return new Response('Unauthorized', {
+  //     status: 401
+  //   })
+  // }
 
   // Context Gathering
   // console.log(messages)

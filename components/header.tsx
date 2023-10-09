@@ -2,8 +2,8 @@ import * as React from 'react'
 import Link from 'next/link'
 
 import { cn } from '@/lib/utils'
-import { auth } from '@/auth'
-import { clearChats } from '@/app/actions'
+// import { auth } from '@/auth'
+// import { clearChats } from '@/app/actions'
 import { Button, buttonVariants } from '@/components/ui/button'
 import { Sidebar } from '@/components/sidebar'
 import { SidebarList } from '@/components/sidebar-list'
@@ -32,7 +32,7 @@ import { DialogEgov } from './dialog'
 
 
 export async function Header() {
-  const session = await auth();
+  // const session = await auth();
 
   return (
     <>
@@ -51,27 +51,26 @@ export async function Header() {
           
         <ThemeToggle />
         {/* <IconSeparator className="w-6 h-6 text-muted-foreground/50" /> */}
-        {session?.user ? (
-          // <Sidebar>
-          //   <React.Suspense fallback={<div className="flex-1 overflow-auto" />}>
-          //     {/* @ts-ignore */}
-          //     <SidebarList userId={session?.user?.id} />
-          //   </React.Suspense>
-          //   <SidebarFooter>
-          //     <ThemeToggle />
-          //     <ClearHistory clearChats={clearChats} />
-          //   </SidebarFooter>
-          // </Sidebar>
-          <></>
+        {/* {session?.user ? (
+          <Sidebar>
+            <React.Suspense fallback={<div className="flex-1 overflow-auto" />}>
+              <SidebarList userId={session?.user?.id} />
+            </React.Suspense>
+            <SidebarFooter>
+              <ThemeToggle />
+              <ClearHistory clearChats={clearChats} />
+            </SidebarFooter>
+          </Sidebar>
+          
           
         ) : (
           <Link href="/" target="_blank" rel="nofollow">
             <IconNextChat className="w-6 h-6 mr-2 dark:hidden" inverted />
             <IconNextChat className="hidden w-6 h-6 mr-2 dark:block" />
           </Link>
-        )}
+        )} */}
         
-        <div className="flex items-center">
+        {/* <div className="flex items-center">
           
           <IconSeparator className="w-6 h-6 text-muted-foreground/50" />
           {session?.user ? (
@@ -81,7 +80,7 @@ export async function Header() {
               <Link href="/sign-in?callbackUrl=/">Login</Link>
             </Button>
           )}
-        </div>
+        </div> */}
 
         </div>
         
