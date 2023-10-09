@@ -22,7 +22,7 @@ const RadioGroupRoot = RadioGroupPrimitive.Root;
 const RadioGroupItem = React.forwardRef<HTMLDivElement, RadioGroupItemProps>(
   ({ className, children, ...props }, ref) => (
     <RadioGroupPrimitive.Item
-      // ref={ref}
+      ref={ref as any}
       className={cn('RadioGroupItem', className)}
       {...props}
     >
@@ -30,6 +30,7 @@ const RadioGroupItem = React.forwardRef<HTMLDivElement, RadioGroupItemProps>(
     </RadioGroupPrimitive.Item>
   )
 );
+RadioGroupItem.displayName = 'RadioGroupItem';
 
 const RadioGroupIndicator = React.forwardRef<HTMLDivElement, RadioGroupIndicatorProps>(
   ({ className, ...props }, ref) => (
@@ -40,6 +41,8 @@ const RadioGroupIndicator = React.forwardRef<HTMLDivElement, RadioGroupIndicator
     />
   )
 );
+RadioGroupIndicator.displayName = 'RadioGroupIndicator';
+
 
 const RadioGroupLabel: React.FC<RadioGroupLabelProps> = ({ className, htmlFor, children }) => (
   <label className={cn('Label', className)} htmlFor={htmlFor}>
