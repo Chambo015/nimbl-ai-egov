@@ -24,6 +24,7 @@ import { Button } from './ui/button'
 import { Input } from './ui/input'
 import { toast } from 'react-hot-toast'
 import { RadioGroupRoot, RadioGroupItem, RadioGroupIndicator, RadioGroupLabel } from './ui/radio'
+import StarterScreen from './starter-screen'
 import { useData } from './context/DataContext'
 
 const IS_PREVIEW = process.env.VERCEL_ENV === 'preview'
@@ -53,7 +54,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
         }
       }
     })
-
+  const [isChatStarted, setIsChatStarted] = useState(false);
   const [showGetService, setShowGetService] = useState(false)
   const [getService, setGetService] = useState(false)
   const [phoneNum, setPhoneNum] = useState('')
@@ -114,7 +115,17 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
   const { data } = useData();
 
   return (
+    isChatStarted === false 
+    ?
+    <StarterScreen startChat={(input?: string) => { 
+      setIsChatStarted(true);
+      if(input) {
+        setInput(input);
+      }
+    }} />
+    :
     <>
+      {}
       <div className={cn('pb-[200px] pt-4 md:pt-10', className)}>
         {data && <p className='text-center'>{JSON.stringify(data)}</p>}
         {/* <p className='text-center'>{isLoading.valueOf().toString()}</p> */}
