@@ -7,28 +7,51 @@ import { CodeBlock } from '@/components/ui/codeblock'
 import { MemoizedReactMarkdown } from '@/components/markdown'
 import { IconNimbl, IconOpenAI, IconUser } from '@/components/ui/icons'
 import { ChatMessageActions } from '@/components/chat-message-actions'
+import { useMemo } from 'react'
 
 export interface ChatMessageProps {
   message: Message
 }
 
 export function ChatMessage({ message, ...props }: ChatMessageProps) {
+  const time = useMemo(() => {
+    if(!message.createdAt) return null;
+    const date = new Date(message.createdAt)
+    const hours = date.getHours()
+    const hoursString = hours < 10 ? `0${hours}` : `hours`
+    const minutes = date.getMinutes()
+    const minutesString = minutes < 10 ? `0${minutes}` : `minutes`
+    return `${hoursString}:${minutesString}`
+  }, [message])
+
   return (
     <div
       className={cn('group relative mb-4 flex items-start md:-ml-12')}
       {...props}
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100%',
+        ...(message.role === 'user' ? {
+          alignItems: 'flex-end'
+        } : {
+          alignItems: 'flex-start'
+        }),
+      }}
     >
-      <div
-        className={cn(
-          'flex h-8 w-8 shrink-0 select-none items-center justify-center rounded-md border shadow',
-          message.role === 'user'
-            ? 'bg-background'
-            : 'bg-primary text-primary-foreground'
-        )}
-      >
-        {message.role === 'user' ? <IconUser /> : <IconNimbl />}
-      </div>
-      <div className="ml-4 flex-1 space-y-2 overflow-hidden px-1">
+      <div className="ml-4 flex-1 space-y-2 overflow-hidden px-1" style={{
+          ...(message.role === 'user' ? {
+            backgroundColor: 'rgba(55, 55, 55, 0.22)',
+            justifyContent: 'flex-end'
+          } : {
+            backgroundColor: 'rgba(56, 75, 144, 0.27)',
+            justifyContent: 'flex-start'
+          }),
+          maxWidth: '80%',
+          borderRadius: '16px',
+          display: 'flex',
+          padding: '8px',
+        }}>
         <MemoizedReactMarkdown
           className="prose break-words dark:prose-invert prose-p:leading-relaxed prose-pre:p-0"
           remarkPlugins={[remarkGfm, remarkMath]}
@@ -71,6 +94,21 @@ export function ChatMessage({ message, ...props }: ChatMessageProps) {
           {message.content}
         </MemoizedReactMarkdown>
         <ChatMessageActions message={message} />
+      </div>
+      <div style={{
+        display: 'flex',
+        ...(message.role === 'user' ? {
+          justifyContent: 'flex-end'
+        } : {
+          justifyContent: 'flex-start'
+        }),
+        width: '100%',
+      }}>
+        <span style={{
+          fontSize: '12px',
+          fontWeight: 400,
+          textAlign: message.role === 'user' ? 'right' : 'left',
+        }}>{time}</span>
       </div>
     </div>
   )
