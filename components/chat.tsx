@@ -374,15 +374,15 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
               <p className='px-0 font-semibold'> 
                 Запрос обработан положительно
               </p>
-              <ul className='px-0'>
+              <div className='flex flex-col space-y-2 px-2'>
                 {resultServiceNarko && resultServiceNarko.resultsForDownload && resultServiceNarko.resultsForDownload.map((item: any, index: number) => (
-                  <li key={index}>
-                    <a href={item.url} target='_blank' rel='noreferrer'>
-                      {item.nameRu}
+                  // <li key={index}>
+                    <a className='underline' key={index} href={item.url} target='_blank' rel='noreferrer'>
+                      {item.name}
                     </a>
-                  </li>
+                  // </li>
                 ))}
-              </ul>
+              </div>
 
               </div>
             )}
