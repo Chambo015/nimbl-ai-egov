@@ -119,6 +119,10 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
   const [smsCode, setSmsCode] = useState<string>('');
 
   const [resultLast, setResultLast] = useState<any>(null);
+  const [resultServiceNarko, setResultServiceNarko] = useState<any>(null);
+
+  const [loadingService1, setLoadingService1] = useState<boolean>(false);
+  const [loadingService2, setLoadingService2] = useState<boolean>(false);
   return (
     isChatStarted === false 
     ?
@@ -139,7 +143,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
             <ChatList messages={messages} />
             <ChatScrollAnchor trackVisibility={isLoading} />
             {(messages.length > 0 && showGetService && !isLoading && !pageQueryURL && !getService) && (
-              <div className='flex flex-col space-y-2 items-center mx-auto max-w-2xl px-4'>
+              <div className='flex flex-col space-y-2 items-center mx-auto max-w-2xl px-4 bg-green'>
                 <p>
                   Хотите получить услугу сейчас?
                 </p>
@@ -158,7 +162,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
 
             {getService && serviceType != '' && !pageQueryURL && (
               serviceType === 'narko' ? (
-                <div className='flex flex-col space-y-4 w-auto text-left mx-auto max-w-2xl px-6 rounded-lg border bg-background p-8'>
+                <div className='flex flex-col space-y-4 w-auto text-left mx-4 md:mx-auto max-w-2xl px-6 rounded-lg border bg-background p-8'>
                 <p className='px-0 font-semibold'> 
                   ПРЕДОСТАВЛЕНИЕ СВЕДЕНИЙ С ЦЕНТРА ПСИХИЧЕСКОГО ЗДОРОВЬЯ «НАРКОЛОГИЯ»
                 </p>
@@ -212,14 +216,13 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
                   onChange={e => setEmail(e.target.value)}
                 /> */}
                 <Button
+                  
                   variant='default'
                   size='lg'
                   className='mt-2'
                   onClick={async () => {
                     // setInput('да')
-                    setLink('');
-                    setGetService(false)
-
+                    setLoadingService1(true)
                     const response = await fetch('/api/egov-get-service-first', {
                       method: 'POST',
                       headers: {
@@ -231,13 +234,39 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
                       })
                     });
                     const result = await response.json();
+                    
                     console.log('result', result);
                     // setResult(result);
                     setPageQueryURL(result.page_query_url);
+                    setLink('');
+                    setGetService(false)
+                    setShowGetService(false)
+                    setLoadingService1(false)
 
                   }}
                 >
-                  Подписать
+                  {loadingService1 ? (
+                    <svg
+                    className="animate-spin h-5 w-5 text-gray-500"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                    ></path>
+                  </svg>
+                  ) : 'Подписать'}
                 </Button>
               </div>
               ) : (
@@ -246,7 +275,10 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
             )}
 
             {pageQueryURL && !resultLast && (
-                <div className='flex flex-col space-y-4 w-auto text-left mx-auto max-w-2xl px-6 rounded-lg border bg-background p-8'>
+                <div className='flex flex-col space-y-4 w-auto text-left mx-4 md:mx-auto max-w-2xl px-6 rounded-lg border bg-background p-8'>
+                <p className='px-0 font-semibold'> 
+                  ПОДПИСАНИЕ УСЛУГИ
+                </p>
                 <p className='px-0'>
                   Код из смс для подписания услуги:
                 </p>
@@ -262,6 +294,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
                   className='mt-2'
                   onClick={async () => {
                     // setInput('да')
+                    setLoadingService2(true)
                     const response = await fetch('/api/egov-get-service-second', {
                       method: 'POST',
                       headers: {
@@ -273,19 +306,85 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
                         smsCode : smsCode
                       })
                     });
-                    const result = await response.json();
-                    console.log('result', result);
-                    setResultLast(result);
+                    const result1 = await response.json();
+                    console.log('result', result1);
+                    if (JSON.parse(result1.result.join('')).status === "IN_PROCESSING") {
+                      let result_status = 'IN_PROCESSING';
+                      while (result_status == 'IN_PROCESSING') {
+                        await new Promise(r => setTimeout(r, 1000));
+                        const response2 = await fetch('/api/egov-get-service-status', {
+                          method: 'POST',
+                          headers: {
+                            'Content-Type': 'application/json'
+                          },
+                          body: JSON.stringify({
+                            cookies : data,
+                            result_url : result1.result_url
+                          })
+                        });
+                        const result2 = await response2.json();
+                        if (result2.status && result2.status == "IN_PROCESSING") {
+                          result_status = 'IN_PROCESSING';
+                        } else {
+                          result_status = 'DONE';
+                          setResultServiceNarko(result2)
+                          console.log('result_status', result2);
+                        }
+                      }
+                    } else {
+                      setResultServiceNarko(result1)
+                    }
+                    setResultLast(result1);
+                    setLoadingService2(false)
                     // setResult(result);
                     // setPageQueryURL(result.page_query_url);
 
                   }}
                 >
-                  Подписать
+                  {loadingService2 ? (
+                    <svg
+                    className="animate-spin h-5 w-5 text-gray-500"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                    ></path>
+                  </svg>
+                  ) : 'Подтвердить'}
                 </Button>
                 )}
                 
                 </div>
+            )}
+
+            {resultServiceNarko && (
+              <div className='flex flex-col space-y-4 w-auto text-left mx-4 md:mx-auto max-w-2xl px-6 rounded-lg border bg-background p-8'>
+              <p className='px-0 font-semibold'> 
+                Запрос обработан положительно
+              </p>
+              <ul className='px-0'>
+                {resultServiceNarko && resultServiceNarko.resultsForDownload && resultServiceNarko.resultsForDownload.map((item: any, index: number) => (
+                  <li key={index}>
+                    <a href={item.url} target='_blank' rel='noreferrer'>
+                      {item.nameRu}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+
+              </div>
             )}
             
           </>
