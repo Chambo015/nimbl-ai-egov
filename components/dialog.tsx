@@ -20,13 +20,14 @@ import { useData } from './context/DataContext';
 
 export function DialogEgov() {
     const { data, setData } = useData();
+    const [tempData, setTempData] = React.useState<any>(null);
     const [previewToken, setPreviewToken] = React.useState<boolean>(false);
 
     const [cookiesAll, setCookiesAll] = React.useState<any>(null);
 
-    const [userName, setUserName] = React.useState<string>('980403350842');
+    const [userName, setUserName] = React.useState<string>('');
     // d9jGShNE
-    const [password, setPassword] = React.useState<string>('d9jGShNE');
+    const [password, setPassword] = React.useState<string>('');
     const [result, setResult] = React.useState<any>(null);
     const [smsCode, setSmsCode] = React.useState<string>('');
     const [phoneNum, setPhoneNum] = React.useState<string>('');
@@ -49,15 +50,22 @@ export function DialogEgov() {
     
     return (
     <>
-        <Button variant="link" className="-ml-2" onClick={() => setPreviewToken(true)}>
-            Авторизация egov
+        <Button style={{
+          backgroundColor: 'white',
+          borderRadius: '14px',
+          padding: '4px 12px',
+          marginTop: 8,
+        }} onClick={() => setPreviewToken(true)}>
+            <span style={{
+              color: 'black'
+            }}>Авторизация</span>
         </Button>
         <Dialog open={previewToken} onOpenChange={() => {setPreviewToken(false)}}>
         <DialogContent>
         {/* <form onSubmit={handleSubmit}> */}
           <DialogHeader>
             <DialogTitle>Авторизация Egov</DialogTitle>
-            {!cookiesAll && !result && (<DialogDescription>
+            {!tempData && !result && (<DialogDescription>
                 Введите логин и пароль от личного кабинета egov.kz
                 
             </DialogDescription>)}
@@ -69,7 +77,7 @@ export function DialogEgov() {
             )}
           </DialogHeader>
           
-          {!cookiesAll && (
+          {!tempData && (
           <>
           <Input
             value={userName}
@@ -84,7 +92,7 @@ export function DialogEgov() {
           />
           </>
           )}
-          {cookiesAll && !result && (
+          {tempData && !result && (
             <>
             <DialogDescription>
                 Введите номер телефона и код из смс
@@ -106,7 +114,7 @@ export function DialogEgov() {
             {!result && (<Button
               // type='submit'
               onClick={async () => {
-                if (userName != '' && password != '' && !cookiesAll) {
+                if (userName != '' && password != '' && !tempData) {
                     const response = await fetch(url1, {
                         method: 'POST',
                         headers: {
@@ -118,10 +126,7 @@ export function DialogEgov() {
                         })
                       });
                     const data = await response.json();
-                    console.log(data);
-                    setData(data);
-                    localStorage.setItem('cookiesAll', JSON.stringify(data));
-                    setCookiesAll(data);
+                    setTempData(data)
                     // setResult(result);
                 } else {
                     const response = await fetch('/api/egov-auth-final', {
@@ -134,20 +139,28 @@ export function DialogEgov() {
                           password : password,
                           phoneNum : phoneNum,
                           smsCode : smsCode,
-                          cookiesAll : cookiesAll
+                          cookiesAll : tempData
                         })
                       });
                     const result = await response.json();
-                    localStorage.setItem('firstname', result.firstname);
-                    localStorage.setItem('lastname', result.lastname);
+                    const info = JSON.parse(result.info);
+                    localStorage.setItem('firstname', info?.profile?.firstname ?? '');
+                    localStorage.setItem('lastname', info?.profile?.lastname ?? '');
+                    // parse json string
                     console.log('result', result);
+                    console.log('result', result.info.profile);
                     setResult(result);
+                    console.log(data);
+                    setData(tempData);
+                    localStorage.setItem('cookiesAll', JSON.stringify(data));
+                    setCookiesAll(tempData);
+                    // setTempData(null);
                 }
               }}
             >
-                {!cookiesAll ? 'Получить код' : 'Подтвердить'}
+                {!tempData ? 'Получить код' : 'Подтвердить'}
             </Button>)}
-            {result && (
+            {/* {result && (
               <Button 
                 onClick={async () => {
                   const response = await fetch('/api/egov-service-test1', {
@@ -156,7 +169,7 @@ export function DialogEgov() {
                       'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                      cookiesAll : cookiesAll
+                      cookiesAll: cookiesAll
                     })
                   });
                 const result = await response.json();
@@ -165,7 +178,7 @@ export function DialogEgov() {
               >
                 Test service
               </Button>
-            )}
+            )} */}
           </DialogFooter>
           {/* </form> */}
         </DialogContent>

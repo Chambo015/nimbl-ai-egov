@@ -1,10 +1,11 @@
 'use client'
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
-type DataType = { id: number; name: string }[];
+type DataType = { id: number; name: string };
 
 interface DataContextProps {
   data: DataType | null;
+  fullname: string;
   setData: React.Dispatch<React.SetStateAction<DataType | null>>;
 }
 
@@ -18,6 +19,7 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
   // Check localStorage for initial data
   const initialData = typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('data') || 'null') : null;
   const [data, setData] = useState<DataType | null>(initialData);
+  const [fullname, setFullname] = useState<string>('');
 
   // Update localStorage whenever data changes
   useEffect(() => {
@@ -26,8 +28,16 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
     }
   }, [data]);
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const firstname = localStorage.getItem('firstname');
+      const lastname = localStorage.getItem('lastname');
+      setFullname(firstname + ' ' + lastname)
+    }
+  }, [data]);
+
   return (
-    <DataContext.Provider value={{ data, setData }}>
+    <DataContext.Provider value={{ data, fullname, setData }}>
       {children}
     </DataContext.Provider>
   );

@@ -3,18 +3,29 @@
 
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { DialogEgov } from "./dialog";
+import { useData } from "./context/DataContext";
+
+import { Open_Sans } from 'next/font/google'
+
+const openSans = Open_Sans({
+  display: 'swap',
+  subsets: ['cyrillic-ext', 'cyrillic'],
+  weight: ['400', '700'],
+})
 
 const StarterScreen = ({ startChat }: { startChat: (input?: string) => void }) => {
   const account = {
     name: 'Диас Нурбергенов',
   }
   const { push } = useRouter();
+  const { fullname, data } = useData();
 
   return (
     <div style={{
       flexDirection: 'column',
     }}>
-      {/* <div style={{
+      {data && <div style={{
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -26,14 +37,14 @@ const StarterScreen = ({ startChat }: { startChat: (input?: string) => void }) =
           flexDirection: 'column',
         }}>
           <p>Добро пожаловать</p>
-          <h6>{account.name}</h6>
+          <h6>{fullname}</h6>
         </div>
-        <img src="/images/avatar.png" style={{
+        {/* <img src="/images/avatar.png" style={{
           width: 40,
           height: 40,
           borderRadius: 20,
-        }} />
-      </div> */}
+        }} /> */}
+      </div>}
       <div style={{
         width: '100%',
         aspectRatio: 4/3,
@@ -75,18 +86,8 @@ const StarterScreen = ({ startChat }: { startChat: (input?: string) => void }) =
           }}>
             чатбот, который может ответить на вопросы по услугам eGov
           </span>
-          <Button style={{
-            backgroundColor: 'white',
-            borderRadius: '14px',
-            padding: '4px 12px',
-            marginTop: 8,
-          }}>
-            <span style={{
-              color: 'black',
-              fontSize: '12px',
-              fontWeight: 700,
-            }}>НАЧАТЬ ЧАТ</span>
-          </Button>
+          {!(data) &&
+            <DialogEgov />}
           {/* <span style={{
             fontSize: '16px',
             background: "linear-gradient(270deg, #60E2FF 0%, #8C98FF 50%, #FF94EE 100%)",
@@ -128,7 +129,7 @@ const StarterScreen = ({ startChat }: { startChat: (input?: string) => void }) =
                 height: 15,
               }} />
             </div>
-            <h6>
+            <h6 className={openSans.className}>
               Начать новый чат
             </h6>
           </button>
@@ -157,7 +158,7 @@ const StarterScreen = ({ startChat }: { startChat: (input?: string) => void }) =
                 height: 15,
               }} />
             </div>
-            <h6>
+            <h6 className={openSans.className}>
               Недавние вопросы
             </h6>
           </button>
@@ -167,7 +168,7 @@ const StarterScreen = ({ startChat }: { startChat: (input?: string) => void }) =
         width: '100%',
         padding: 16,
       }}>
-        <span style={{
+        <span className={openSans.className} style={{
           fontSize: '16px',
           fontWeight: 700,
           lineHeight: '21.68px',
@@ -209,7 +210,7 @@ const StarterScreen = ({ startChat }: { startChat: (input?: string) => void }) =
           <div style={{
             flex: 1,
           }}>
-            <span style={{
+            <span className={openSans.className} style={{
               fontSize: '14px',
               fontWeight: 400,
               lineHeight: '13.97px',
@@ -246,7 +247,7 @@ const StarterScreen = ({ startChat }: { startChat: (input?: string) => void }) =
           <div style={{
             flex: 1,
           }}>
-            <span style={{
+            <span className={openSans.className} style={{
               fontSize: '14px',
               fontWeight: 400,
               lineHeight: '13.97px',
@@ -283,7 +284,7 @@ const StarterScreen = ({ startChat }: { startChat: (input?: string) => void }) =
           <div style={{
             flex: 1,
           }}>
-            <span style={{
+            <span className={openSans.className} style={{
               fontSize: '14px',
               fontWeight: 400,
               lineHeight: '13.97px',
@@ -320,7 +321,7 @@ const StarterScreen = ({ startChat }: { startChat: (input?: string) => void }) =
           <div style={{
             flex: 1,
           }}>
-            <span style={{
+            <span className={openSans.className} style={{
               fontSize: '14px',
               fontWeight: 400,
               lineHeight: '13.97px',
