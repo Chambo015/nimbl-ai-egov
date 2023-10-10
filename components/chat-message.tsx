@@ -18,9 +18,9 @@ export function ChatMessage({ message, ...props }: ChatMessageProps) {
     if(!message.createdAt) return null;
     const date = new Date(message.createdAt)
     const hours = date.getHours()
-    const hoursString = hours < 10 ? `0${hours}` : `hours`
+    const hoursString = hours < 10 ? `0${hours}` : hours
     const minutes = date.getMinutes()
-    const minutesString = minutes < 10 ? `0${minutes}` : `minutes`
+    const minutesString = minutes < 10 ? `0${minutes}` : minutes
     return `${hoursString}:${minutesString}`
   }, [message])
 
