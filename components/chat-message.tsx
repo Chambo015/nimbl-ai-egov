@@ -47,10 +47,12 @@ export function ChatMessage({ message, ...props }: ChatMessageProps) {
             backgroundColor: 'rgba(56, 75, 144, 0.27)',
             justifyContent: 'flex-start'
           }),
-          maxWidth: '80%',
+          // maxWidth: '80%',
           borderRadius: '16px',
           display: 'flex',
-          padding: '8px',
+          padding: '16px',
+          paddingLeft: '16px',
+          paddingRight: '16px'
         }}>
         <MemoizedReactMarkdown
           className="prose break-words dark:prose-invert prose-p:leading-relaxed prose-pre:p-0"
@@ -95,7 +97,7 @@ export function ChatMessage({ message, ...props }: ChatMessageProps) {
         </MemoizedReactMarkdown>
         {/*<ChatMessageActions message={message} />*/}
       </div>
-      <div style={{
+      {/* <div style={{
         display: 'flex',
         ...(message.role === 'user' ? {
           justifyContent: 'flex-end'
@@ -109,7 +111,7 @@ export function ChatMessage({ message, ...props }: ChatMessageProps) {
           fontWeight: 400,
           textAlign: message.role === 'user' ? 'right' : 'left',
         }}>{time}</span>
-      </div>
+      </div> */}
     </div>
   )
 }

@@ -114,6 +114,11 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
 
   const { data } = useData();
 
+  const [pageQueryURL, setPageQueryURL] = useState<string | null>(null)
+
+  const [smsCode, setSmsCode] = useState<string>('');
+
+  const [resultLast, setResultLast] = useState<any>(null);
   return (
     isChatStarted === false 
     ?
@@ -133,8 +138,8 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
           <>
             <ChatList messages={messages} />
             <ChatScrollAnchor trackVisibility={isLoading} />
-            {(messages.length > 0 && showGetService && !isLoading && !getService) && (
-              <div className='flex flex-row space-x-2 items-center mx-auto max-w-2xl px-4'>
+            {(messages.length > 0 && showGetService && !isLoading && !pageQueryURL && !getService) && (
+              <div className='flex flex-col space-y-2 items-center mx-auto max-w-2xl px-4'>
                 <p>
                   Хотите получить услугу сейчас?
                 </p>
@@ -151,7 +156,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
               </div>
             )}
 
-            {getService && serviceType != '' && (
+            {getService && serviceType != '' && !pageQueryURL && (
               serviceType === 'narko' ? (
                 <div className='flex flex-col space-y-4 w-auto text-left mx-auto max-w-2xl px-6 rounded-lg border bg-background p-8'>
                 <p className='px-0 font-semibold'> 
@@ -210,10 +215,26 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
                   variant='default'
                   size='lg'
                   className='mt-2'
-                  onClick={() => {
+                  onClick={async () => {
                     // setInput('да')
                     setLink('');
                     setGetService(false)
+
+                    const response = await fetch('/api/egov-get-service-first', {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({
+                        
+                        cookies : data
+                      })
+                    });
+                    const result = await response.json();
+                    console.log('result', result);
+                    // setResult(result);
+                    setPageQueryURL(result.page_query_url);
+
                   }}
                 >
                   Подписать
@@ -222,6 +243,49 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
               ) : (
                 <></>
               ) 
+            )}
+
+            {pageQueryURL && !resultLast && (
+                <div className='flex flex-col space-y-4 w-auto text-left mx-auto max-w-2xl px-6 rounded-lg border bg-background p-8'>
+                <p className='px-0'>
+                  Код из смс для подписания услуги:
+                </p>
+                <Input
+                  value={smsCode}
+                  placeholder="Код смс"
+                  onChange={e => setSmsCode(e.target.value)}
+                />
+                {smsCode != '' && (
+                  <Button
+                  variant='default'
+                  size='lg'
+                  className='mt-2'
+                  onClick={async () => {
+                    // setInput('да')
+                    const response = await fetch('/api/egov-get-service-second', {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({
+                        pageQueryURL : pageQueryURL,
+                        cookies : data,
+                        smsCode : smsCode
+                      })
+                    });
+                    const result = await response.json();
+                    console.log('result', result);
+                    setResultLast(result);
+                    // setResult(result);
+                    // setPageQueryURL(result.page_query_url);
+
+                  }}
+                >
+                  Подписать
+                </Button>
+                )}
+                
+                </div>
             )}
             
           </>
