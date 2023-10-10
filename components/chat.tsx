@@ -123,6 +123,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
 
   const [loadingService1, setLoadingService1] = useState<boolean>(false);
   const [loadingService2, setLoadingService2] = useState<boolean>(false);
+
   return (
     isChatStarted === false 
     ?
@@ -138,6 +139,9 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
       <div className={cn('pb-[200px] pt-4 md:pt-10', className)}>
         {/* {data && <p className='text-center'>{JSON.stringify(data)}</p>} */}
         {/* <p className='text-center'>{isLoading.valueOf().toString()}</p> */}
+        {/* {localStorage.getItem('result_status_narco') && 
+        <p>{JSON.stringify(JSON.parse(localStorage.getItem('result_status_narco') as string).resultsForDownload)}</p>
+        } */}
         {messages.length || isLoading ? (
           <>
             <ChatList messages={messages} />
@@ -327,12 +331,14 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
                           result_status = 'IN_PROCESSING';
                         } else {
                           result_status = 'DONE';
-                          setResultServiceNarko(result2)
+                          // console.log('result_status here', result2.resultsForDownload);
+                          localStorage.setItem('result_status_narco', result2);
+                          setResultServiceNarko(JSON.parse(result2))
                           console.log('result_status', result2);
                         }
                       }
                     } else {
-                      setResultServiceNarko(result1)
+                      setResultServiceNarko(JSON.parse(result1))
                     }
                     setResultLast(result1);
                     setLoadingService2(false)
@@ -374,16 +380,15 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
               <p className='px-0 font-semibold'> 
                 Запрос обработан положительно
               </p>
-              <div className='flex flex-col space-y-2 px-2'>
-                <p>{JSON.stringify(resultServiceNarko)}</p>
+              <ul className='list-disc list-inside space-y-2'>
                 {resultServiceNarko && resultServiceNarko.resultsForDownload && resultServiceNarko.resultsForDownload.map((item: any, index: number) => (
-                  // <li key={index}>
+                  <li key={index}>
                     <a className='underline' key={index} href={item.url} target='_blank' rel='noreferrer'>
                       {item.name}
                     </a>
-                  // </li>
+                  </li>
                 ))}
-              </div>
+              </ul>
 
               </div>
             )}
