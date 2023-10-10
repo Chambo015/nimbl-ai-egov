@@ -375,6 +375,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
                 Запрос обработан положительно
               </p>
               <div className='flex flex-col space-y-2 px-2'>
+                <p>{JSON.stringify(resultServiceNarko)}</p>
                 {resultServiceNarko && resultServiceNarko.resultsForDownload && resultServiceNarko.resultsForDownload.map((item: any, index: number) => (
                   // <li key={index}>
                     <a className='underline' key={index} href={item.url} target='_blank' rel='noreferrer'>
