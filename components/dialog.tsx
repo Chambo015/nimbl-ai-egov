@@ -15,9 +15,11 @@ import {
     DialogTitle
   } from '@/components/ui/dialog'
   import { Input } from './ui/input'
+import { useData } from './context/DataContext';
   
 
 export function DialogEgov() {
+    const { data, setData } = useData();
     const [previewToken, setPreviewToken] = React.useState<boolean>(false);
 
     const [cookiesAll, setCookiesAll] = React.useState<any>(null);
@@ -117,6 +119,7 @@ export function DialogEgov() {
                       });
                     const data = await response.json();
                     console.log(data);
+                    setData(data);
                     localStorage.setItem('cookiesAll', JSON.stringify(data));
                     setCookiesAll(data);
                     // setResult(result);

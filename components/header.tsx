@@ -30,6 +30,7 @@ import {
 import { Input } from './ui/input'
 import { DialogEgov } from './dialog'
 import dynamic from 'next/dynamic'
+// import { useData } from './context/DataContext'
 
 const ThemeToggle = dynamic(() => import('@/components/theme-toggle'), {
   ssr: false,
@@ -38,6 +39,7 @@ const ThemeToggle = dynamic(() => import('@/components/theme-toggle'), {
 
 export async function Header() {
   // const session = await auth();
+  // const { data } = useData();
 
   return (
     <>
@@ -87,10 +89,9 @@ export async function Header() {
           )}
         </div> */}
 
-        {/* {localStorage.getItem('firstname') && localStorage.getItem('lastname') && (
+        {/* {data && (
           <div className='flex flex-row space-x-2'>
-            <p>{localStorage.getItem('firstname')}</p>
-            <p>{localStorage.getItem('lastname')}</p>
+            <p>{JSON.stringify(data)}</p>
           </div>
         )} */}
 

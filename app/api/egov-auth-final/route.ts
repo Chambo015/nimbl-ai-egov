@@ -9,7 +9,7 @@ export async function POST(req: Request) {
   try {
     const jsonInput = await req.json();
     console.log('jsonInput', jsonInput);
-  const url1 = 'http://172.20.10.2:8000/api/user/login/code/';
+  const url1 = 'http://10.131.2.83:8000/api/user/login/code/';
   const postResponse = await fetch(url1, {
     method: 'POST',
     headers: {

@@ -24,6 +24,7 @@ import { Button } from './ui/button'
 import { Input } from './ui/input'
 import { toast } from 'react-hot-toast'
 import { RadioGroupRoot, RadioGroupItem, RadioGroupIndicator, RadioGroupLabel } from './ui/radio'
+import { useData } from './context/DataContext'
 
 const IS_PREVIEW = process.env.VERCEL_ENV === 'preview'
 export interface ChatProps extends React.ComponentProps<'div'> {
@@ -109,10 +110,13 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
     'Законный представитель'
   ]
   const [narkoService, setNarkoService] = useState<string | null>(null)
+
+  const { data } = useData();
+
   return (
     <>
       <div className={cn('pb-[200px] pt-4 md:pt-10', className)}>
-        {/* <p className='text-center'>{messages.length}</p> */}
+        {data && <p className='text-center'>{JSON.stringify(data)}</p>}
         {/* <p className='text-center'>{isLoading.valueOf().toString()}</p> */}
         {messages.length || isLoading ? (
           <>
