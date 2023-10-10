@@ -127,7 +127,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
     <>
       {}
       <div className={cn('pb-[200px] pt-4 md:pt-10', className)}>
-        {data && <p className='text-center'>{JSON.stringify(data)}</p>}
+        {/* {data && <p className='text-center'>{JSON.stringify(data)}</p>} */}
         {/* <p className='text-center'>{isLoading.valueOf().toString()}</p> */}
         {messages.length || isLoading ? (
           <>
