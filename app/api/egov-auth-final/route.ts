@@ -9,14 +9,13 @@ export async function POST(req: Request) {
   try {
     const jsonInput = await req.json();
     console.log('jsonInput', jsonInput);
-    console.log('jsonInput.username', jsonInput.iin);
-  const url1 = 'http://172.20.10.2:8000/api/user/login/';
+  const url1 = 'http://172.20.10.2:8000/api/user/login/code/';
   const postResponse = await fetch(url1, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ 'iin': jsonInput.iin, 'password': jsonInput.password })
+    body: JSON.stringify({ 'cookies': jsonInput.cookiesAll ,'iin': jsonInput.iin, 'code': jsonInput.smsCode, 'phone':  jsonInput.phoneNum})
   });
   const postResponseJson = await postResponse.json();
   console.log('postResponseJson', postResponseJson);

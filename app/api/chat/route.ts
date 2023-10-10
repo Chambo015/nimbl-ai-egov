@@ -118,7 +118,7 @@ export async function POST(req: Request) {
     configuration.apiKey = previewToken
   }
   const res = await openai.createChatCompletion({
-    model: 'gpt-4-0314',
+    model: 'gpt-3.5-turbo',
     messages,
     temperature: 0.4,
     stream: true

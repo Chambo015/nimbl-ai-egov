@@ -87,6 +87,13 @@ export async function Header() {
           )}
         </div> */}
 
+        {/* {localStorage.getItem('firstname') && localStorage.getItem('lastname') && (
+          <div className='flex flex-row space-x-2'>
+            <p>{localStorage.getItem('firstname')}</p>
+            <p>{localStorage.getItem('lastname')}</p>
+          </div>
+        )} */}
+
         </div>
         
       </div>
