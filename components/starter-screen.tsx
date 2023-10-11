@@ -19,7 +19,7 @@ const StarterScreen = ({ startChat }: { startChat: (input?: string) => void }) =
     name: 'Диас Нурбергенов',
   }
   const { push } = useRouter();
-  const { fullname, data } = useData();
+  const { fullname, data, logout } = useData();
 
   return (
     <>
@@ -30,6 +30,7 @@ const StarterScreen = ({ startChat }: { startChat: (input?: string) => void }) =
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'space-between',
+          alignItems: 'center',
           padding: 16,
           width: '100%',
         }}>
@@ -40,11 +41,9 @@ const StarterScreen = ({ startChat }: { startChat: (input?: string) => void }) =
             <p>Добро пожаловать</p>
             <h6>{fullname}</h6>
           </div>
-          {/* <img src="/images/avatar.png" style={{
-            width: 40,
-            height: 40,
-            borderRadius: 20,
-          }} /> */}
+          <button onClick={() => logout()}>
+            <span style={{ color: 'red'}}>Выйти</span>
+          </button>
         </div>}
         <div style={{
           width: '100%',

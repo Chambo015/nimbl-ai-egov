@@ -7,6 +7,7 @@ interface DataContextProps {
   data: DataType | null;
   fullname: string;
   setData: React.Dispatch<React.SetStateAction<DataType | null>>;
+  logout: () => void;
 }
 
 const DataContext = createContext<DataContextProps | undefined>(undefined);
@@ -36,8 +37,15 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
     }
   }, [data]);
 
+  const logout = () => {
+    localStorage.removeItem('data');
+    localStorage.removeItem('firstname');
+    localStorage.removeItem('lastname');
+    setData(null);
+  }
+
   return (
-    <DataContext.Provider value={{ data, fullname, setData }}>
+    <DataContext.Provider value={{ data, fullname, setData, logout }}>
       {children}
     </DataContext.Provider>
   );
