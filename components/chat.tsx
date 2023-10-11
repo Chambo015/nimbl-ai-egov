@@ -511,7 +511,7 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
               <ul className='list-disc list-inside space-y-2'>
                 {resultServiceNarko && resultServiceNarko.resultsForDownload && resultServiceNarko.resultsForDownload.map((item: any, index: number) => (
                   <li key={index}>
-                    <a className='underline' key={index} href={`https://docs.google.com/gview?embedded=true&url=${item.url}`} target='_blank' rel='noreferrer'>
+                    <a className='underline' key={index} href={`https://docs.google.com/gview?&url=${item.url}`} target='_blank' rel='noreferrer'>
                       {item.name}
                     </a>
                   </li>
