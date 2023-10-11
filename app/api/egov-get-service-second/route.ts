@@ -10,7 +10,13 @@ export async function POST(req: Request) {
     // 10.131.2.83 185.125.91.142
     // https://egov.nimbl.tv/
     // https://egov.nimbl.tv/
-    const url1 = 'https://egov.nimbl.tv/api/service/psycho/narco/code/'
+    let url1 = ''
+    if (jsonInput.serviceType === 'narko') {
+      url1 = 'https://egov.nimbl.tv/api/service/psycho/narco/code/'
+    } else if (jsonInput.serviceType === 'forma-2') {
+      url1 = 'https://egov.nimbl.tv/api/service/psycho/forma2/code/'
+    }
+    
     const postResponse = await fetch(url1, {
       method: 'POST',
       headers: {
