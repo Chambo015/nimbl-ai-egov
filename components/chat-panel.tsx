@@ -3,7 +3,7 @@ import { type UseChatHelpers } from 'ai/react'
 import { Button } from '@/components/ui/button'
 import { PromptForm } from '@/components/prompt-form'
 import { ButtonScrollToBottom } from '@/components/button-scroll-to-bottom'
-import { IconArrowRight, IconRefresh, IconStop } from '@/components/ui/icons'
+import { IconArrowRight, IconClose, IconPlus, IconRefresh, IconStop } from '@/components/ui/icons'
 import { FooterText } from '@/components/footer'
 // import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
 import Link from 'next/link'
@@ -112,6 +112,15 @@ export function ChatPanel({
             messages?.length > 0 && (
               <div className='flex flex-row space-x-4'>
                 {/* <p>{JSON.stringify(messages.filter((msg:any) => msg.role == 'assistant')[0].content)}</p> */}
+                <Button
+                  // size='lg'
+                  variant="outline"
+                  onClick={() => window.location.reload()}
+                  className="bg-background"
+                >
+                  <IconClose className="mr-2" />
+                  Сбросить
+                </Button>
 
                 <Button
                   // size='lg'
@@ -123,6 +132,8 @@ export function ChatPanel({
                   {/* Regenerate response */}
                   Получить новый ответ
                 </Button>
+
+                
               </div>
             )
           )}

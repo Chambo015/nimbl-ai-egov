@@ -331,8 +331,6 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
                           result_status = 'IN_PROCESSING';
                         } else {
                           result_status = 'DONE';
-                          // console.log('result_status here', result2.resultsForDownload);
-                          localStorage.setItem('result_status_narco', result2);
                           setResultServiceNarko(JSON.parse(result2))
                           console.log('result_status', result2);
                         }
