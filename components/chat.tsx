@@ -449,7 +449,8 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
                           })
                         });
                         const result2 = await response2.json();
-                        if (result2.status && result2.status == "IN_PROCESSING") {
+                        console.log('result2 here ahha ', result2)
+                        if (JSON.parse(result2).status && JSON.parse(result2).status == "IN_PROCESSING") {
                           result_status = 'IN_PROCESSING';
                         } else {
                           result_status = 'DONE';

@@ -100,6 +100,7 @@ export function ChatPanel({
         <div className={`flex ${isLoading ? 'h-10' : 'h-12'} items-center justify-center`}>
           {isLoading ? (
             <Button
+              size={'sm'}
               variant="outline"
               onClick={() => stop()}
               className="bg-background"
@@ -114,6 +115,7 @@ export function ChatPanel({
                 {/* <p>{JSON.stringify(messages.filter((msg:any) => msg.role == 'assistant')[0].content)}</p> */}
                 <Button
                   // size='lg'
+                  size={'sm'}
                   variant="outline"
                   onClick={() => window.location.reload()}
                   className="bg-background"
@@ -124,6 +126,7 @@ export function ChatPanel({
 
                 <Button
                   // size='lg'
+                  size={'sm'}
                   variant="outline"
                   onClick={() => reload()}
                   className="bg-background"
