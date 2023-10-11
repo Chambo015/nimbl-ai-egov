@@ -15,7 +15,7 @@ export async function POST(req: Request) {
     if (jsonInput.serviceType === 'narko') {
       url1 = 'https://egov.nimbl.tv/api/service/psycho/narco/status/'
     } else if (jsonInput.serviceType === 'forma-2') {
-      url1 = 'https://egov.nimbl.tv/api/service/psycho/forma2/status/'
+      url1 = 'https://egov.nimbl.tv/api/service/forma2/status/'
     }
     // let status = 'in_progress'
     // let postResponse = null as any

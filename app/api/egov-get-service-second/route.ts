@@ -14,7 +14,7 @@ export async function POST(req: Request) {
     if (jsonInput.serviceType === 'narko') {
       url1 = 'https://egov.nimbl.tv/api/service/psycho/narco/code/'
     } else if (jsonInput.serviceType === 'forma-2') {
-      url1 = 'https://egov.nimbl.tv/api/service/psycho/forma2/code/'
+      url1 = 'https://egov.nimbl.tv/api/service/forma2/code/'
     }
     
     const postResponse = await fetch(url1, {
