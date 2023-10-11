@@ -162,6 +162,8 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
           <>
             <ChatList messages={messages} />
             <ChatScrollAnchor trackVisibility={isLoading} />
+            
+            
             {(messages.length > 0 && showGetService && !isLoading && !pageQueryURL && !getService) && (
               <div className='flex flex-col space-y-2 items-center mx-auto max-w-2xl px-4 bg-green'>
                 <p>
@@ -289,6 +291,108 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
                   ) : 'Подписать'}
                 </Button>
               </div>
+              ) : serviceType == 'forma-2' ? (
+                <div className='flex flex-col space-y-4 w-auto text-left mx-4 md:mx-auto max-w-2xl px-6 rounded-lg border bg-background p-8'>
+                <p className='px-0 font-semibold'> 
+                ВЫДАЧА СПРАВКИ О ЗАРЕГИСТРИРОВАННЫХ ПРАВАХ (ОБРЕМЕНЕНИЯХ) НА НЕДВИЖИМОЕ ИМУЩЕСТВО И ЕГО ТЕХНИЧЕСКИХ ХАРАКТЕРИСТИКАХ
+                </p>
+                <p className='px-0'>
+                  Получить услугу:
+                </p>
+                <RadioGroupRoot 
+                  className="RadioGroupRoot" 
+                  defaultValue={narkoOptions[0]} 
+                  onValueChange={(value) => setNarkoService(value)} 
+                  aria-label="View density">
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <RadioGroupItem value={narkoOptions[0]} id="r1">
+                      <RadioGroupIndicator />
+                    </RadioGroupItem>
+                    <RadioGroupLabel htmlFor="r1">
+                      На себя
+                    </RadioGroupLabel>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <RadioGroupItem value={narkoOptions[1]} id="r2">
+                      <RadioGroupIndicator />
+                    </RadioGroupItem>
+                    <RadioGroupLabel htmlFor="r2">
+                    На ребёнка
+                    </RadioGroupLabel>
+                  </div>
+                  {/* ... other radio items ... */}
+                </RadioGroupRoot>
+                <p className='px-0'>
+                  Укажите тип объекта
+                </p>
+                <Input
+                  type='tel'
+                  value={'Первичный обьект'}
+                  placeholder="Номер телефона"
+                  // onChange={e => setPhoneNum(e.target.value)}
+                />
+                <p className='px-0'>
+                  Адрес
+                </p>
+                <Input
+                  value={'г. Астана, улица Сыганак, дом 10, квартира 1'}
+                  placeholder="Адрес"
+                  // onChange={e => setEmail(e.target.value)}
+                />
+                <Button
+                  
+                  variant='default'
+                  size='lg'
+                  className='mt-2'
+                  onClick={async () => {
+                    // setInput('да')
+                    setLoadingService1(true)
+                    const response = await fetch('/api/egov-get-service-forma-first', {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({
+                        
+                        cookies : data
+                      })
+                    });
+                    const result = await response.json();
+                    
+                    console.log('result', result);
+                    // setResult(result);
+                    setPageQueryURL(result.page_query_url);
+                    setLink('');
+                    setGetService(false)
+                    setShowGetService(false)
+                    setLoadingService1(false)
+
+                  }}
+                >
+                  {loadingService1 ? (
+                    <svg
+                    className="animate-spin h-5 w-5 text-gray-500"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                    ></path>
+                  </svg>
+                  ) : 'Подписать'}
+                </Button>
+              </div>
               ) : (
                 <></>
               ) 
@@ -323,7 +427,8 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
                       body: JSON.stringify({
                         pageQueryURL : pageQueryURL,
                         cookies : data,
-                        smsCode : smsCode
+                        smsCode : smsCode,
+                        serviceType : serviceType,
                       })
                     });
                     const result1 = await response.json();
@@ -339,7 +444,8 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
                           },
                           body: JSON.stringify({
                             cookies : data,
-                            result_url : result1.result_url
+                            result_url : result1.result_url,
+                            serviceType: serviceType,
                           })
                         });
                         const result2 = await response2.json();
