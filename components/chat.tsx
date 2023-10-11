@@ -26,12 +26,19 @@ import { toast } from 'react-hot-toast'
 import { RadioGroupRoot, RadioGroupItem, RadioGroupIndicator, RadioGroupLabel } from './ui/radio'
 import StarterScreen from './starter-screen'
 import { useData } from './context/DataContext'
+import { Open_Sans } from 'next/font/google'
 
 const IS_PREVIEW = process.env.VERCEL_ENV === 'preview'
 export interface ChatProps extends React.ComponentProps<'div'> {
   initialMessages?: Message[]
   id?: string
 }
+
+const openSans = Open_Sans({
+  display: 'swap',
+  subsets: ['cyrillic-ext', 'cyrillic'],
+  weight: ['400', '700'],
+})
 
 export function Chat({ id, initialMessages, className }: ChatProps) {
   const [previewToken, setPreviewToken] = useLocalStorage<string | null>(
@@ -134,9 +141,8 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
       }
     }} />
     :
-    <>
-      {}
-      <div className={cn('pb-[200px] pt-4 md:pt-10', className)}>
+    <div className={openSans.className}>
+      <div className={cn('pb-[200px] pt-4 md:pt-10', className, openSans.className)}>
         {/* {data && <p className='text-center'>{JSON.stringify(data)}</p>} */}
         {/* <p className='text-center'>{isLoading.valueOf().toString()}</p> */}
         {/* {localStorage.getItem('result_status_narco') && 
@@ -442,6 +448,6 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
           </DialogFooter>;
         </DialogContent>
       </Dialog>
-    </>
+    </div>
   )
 }
