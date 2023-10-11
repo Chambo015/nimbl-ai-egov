@@ -7,7 +7,7 @@ import { DialogEgov } from "./dialog";
 import { useData } from "./context/DataContext";
 
 import { Open_Sans } from 'next/font/google'
-// import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const openSans = Open_Sans({
   display: 'swap',
@@ -21,6 +21,12 @@ const StarterScreen = ({ startChat }: { startChat: (input?: string) => void }) =
   }
   const { push } = useRouter();
   const { fullname, data, logout } = useData();
+
+  const [cookies, setCookies] = useState('');
+
+    useEffect(() => {
+        setCookies(JSON.parse(document.cookie).json);
+    }, []);
 
   return (
     <>
@@ -331,6 +337,7 @@ const StarterScreen = ({ startChat }: { startChat: (input?: string) => void }) =
               }}>Как распознать что ребенок подвергается кибербуллингу?</span>
             </div>
           </button>
+          <p className="">{JSON.stringify(cookies)}</p>
         </div>
       </div>
     </>
