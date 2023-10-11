@@ -76,10 +76,36 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
   // ])
   const [link, setLink] = useState('')
   const [serviceType, setServiceType] = useState('')
+  const narkoOptions = [
+    'На себя',
+    'На ребёнка',
+    'Законный представитель'
+  ]
+  const [narkoService, setNarkoService] = useState<string | null>(null)
+
+  const { data } = useData();
+
+  const [pageQueryURL, setPageQueryURL] = useState<string | null>(null)
+
+  const [smsCode, setSmsCode] = useState<string>('');
+
+  const [resultLast, setResultLast] = useState<any>(null);
+  const [resultServiceNarko, setResultServiceNarko] = useState<any>(null);
+
+  const [loadingService1, setLoadingService1] = useState<boolean>(false);
+  const [loadingService2, setLoadingService2] = useState<boolean>(false);
+
   useEffect(() => {
     if (!isLoading && messages?.length > 0) {
       console.log("Finished!!!");
       setLink('');
+      setServiceType('');
+      setGetService(false);
+      setNarkoService(null);
+      setPageQueryURL(null);
+      setSmsCode('');
+      setResultLast(null);
+      setResultServiceNarko(null);
       setShowGetService(false);
       const lastAssistantMessage = messages
         .filter((msg) => msg.role === 'assistant')
@@ -111,25 +137,6 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
       setLink('');
     }
   }
-
-  const narkoOptions = [
-    'На себя',
-    'На ребёнка',
-    'Законный представитель'
-  ]
-  const [narkoService, setNarkoService] = useState<string | null>(null)
-
-  const { data } = useData();
-
-  const [pageQueryURL, setPageQueryURL] = useState<string | null>(null)
-
-  const [smsCode, setSmsCode] = useState<string>('');
-
-  const [resultLast, setResultLast] = useState<any>(null);
-  const [resultServiceNarko, setResultServiceNarko] = useState<any>(null);
-
-  const [loadingService1, setLoadingService1] = useState<boolean>(false);
-  const [loadingService2, setLoadingService2] = useState<boolean>(false);
 
   return (
     isChatStarted === false 
