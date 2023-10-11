@@ -142,6 +142,16 @@ export function Chat({ id, initialMessages, className }: ChatProps) {
     }} />
     :
     <div className={openSans.className}>
+      <div className="flex flex-row justify-start items-center w-full px-4 py-4 bg-background">
+        <button onClick={() => {
+          setIsChatStarted(false);
+        }}>
+          <img src="/left-arrow.png" alt="back" style={{
+            width: '15px',
+            height: '15px'
+          }} />
+        </button>
+      </div>
       <div className={cn('pb-[200px] pt-4 md:pt-10', className, openSans.className)}>
         {/* {data && <p className='text-center'>{JSON.stringify(data)}</p>} */}
         {/* <p className='text-center'>{isLoading.valueOf().toString()}</p> */}
