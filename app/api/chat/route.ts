@@ -4,6 +4,7 @@ import { Configuration, OpenAIApi } from 'openai-edge'
 
 // import { auth } from '@/auth'
 import { nanoid } from '@/lib/utils'
+import { NextResponse } from 'next/server'
 
 interface ContextResponse {
   page_content: string,
@@ -45,7 +46,7 @@ export async function POST(req: Request) {
     // https://ailawyer.nimbl.tv/get_context_sources?message=
 
     // zilliz_egov_only_services, zilliz_small
-  const result = await fetch('https://ailawyer.nimbl.tv/get_context_sources?message=' + question + '&source=zilliz_egov_only_services')
+    const result = await fetch('https://aichatbot.nimbl.tv//get_context_sources?message=' + question + '&source=zilliz_egov_only_services')
   
   if (!result.ok) {
     console.log(result)
@@ -156,10 +157,15 @@ export async function POST(req: Request) {
     }
   })
 
+  if(!stream) {
+    return  NextResponse.json({ message: 'Нихуя' }, { status: 500})
+  }
+
   return new StreamingTextResponse(stream)
 
   } catch (error) {
     console.log("Error with context gathering")
     console.log(error)
+    return  NextResponse.json({ message: 'Нихуя catch' }, { status: 500})
   }
 }
