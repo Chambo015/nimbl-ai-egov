@@ -10,7 +10,7 @@ export async function POST(req: Request) {
     const jsonInput = await req.json();
     console.log('jsonInput', jsonInput);
     console.log('jsonInput.username', jsonInput.iin);
-  const url1 = 'https://egov.nimbl.tv/api/user/login/';
+  const url1 = process.env.BACKEND_URL + '/api/user/login/';
   const postResponse = await fetch(url1, {
     method: 'POST',
     headers: {

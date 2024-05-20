@@ -13,9 +13,9 @@ export async function POST(req: Request) {
     // const url1 = 'https://egov.nimbl.tv/api/service/psycho/narco/status/'
     let url1 = ''
     if (jsonInput.serviceType === 'narko') {
-      url1 = 'https://egov.nimbl.tv/api/service/psycho/narco/status/'
+      url1 = process.env.BACKEND_URL + '/api/service/psycho/narco/status/'
     } else if (jsonInput.serviceType === 'forma-2') {
-      url1 = 'https://egov.nimbl.tv/api/service/forma2/status/'
+      url1 = process.env.BACKEND_URL + '/api/service/forma2/status/'
       // https://egov.nimbl.tv
       // https://egov.nimbl.tv
     }

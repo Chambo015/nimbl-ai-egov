@@ -10,7 +10,7 @@ export async function POST(req: Request) {
     // 10.131.2.83 185.125.91.142
     // https://egov.nimbl.tv/
     // https://egov.nimbl.tv/
-    const url1 = 'https://egov.nimbl.tv/api/service/forma2/'
+    const url1 = process.env.BACKEND_URL + '/api/service/forma2/'
     const postResponse = await fetch(url1, {
       method: 'POST',
       headers: {
