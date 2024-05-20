@@ -46,7 +46,7 @@ export async function POST(req: Request) {
     // https://ailawyer.nimbl.tv/get_context_sources?message=
 
     // zilliz_egov_only_services, zilliz_small
-    const result = await fetch('https://aichatbot.nimbl.tv//get_context_sources?message=' + question + '&source=zilliz_egov_only_services')
+    const result = await fetch('https://aichatbot.nimbl.tv/get_context_sources?message=' + question + '&source=zilliz_egov_only_services')
   
   if (!result.ok) {
     console.log(result)
